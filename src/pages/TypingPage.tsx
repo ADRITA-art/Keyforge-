@@ -191,11 +191,8 @@ const TypingPage: React.FC = () => {
         setPlayers(roomData.players);
       });
 
-      socketRef.current.on("playerJoined", ({ playerId }) => {
-        setPlayers((prev) => ({
-          ...prev,
-          [playerId]: { progress: 0 },
-        }));
+      socketRef.current.on("playerJoined", ({ playerId, players: updatedPlayers }) => {
+        setPlayers(updatedPlayers);
       });
 
       socketRef.current.on("playerLeft", ({ playerId, players: updatedPlayers }) => {
