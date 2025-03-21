@@ -198,6 +198,10 @@ const TypingPage: React.FC = () => {
         }));
       });
 
+      socketRef.current.on("playerLeft", ({ playerId, players: updatedPlayers }) => {
+        setPlayers(updatedPlayers);
+      });
+
       socketRef.current.on("winner", ({ playerId }: { playerId: string }) => {
         alert(playerId === username ? "🎉 You won!" : `${playerId} won!`);
         navigate("/");
@@ -222,12 +226,65 @@ const TypingPage: React.FC = () => {
 
   return (
     <Container>
-      <p>{paragraph || "Waiting for paragraph..."}</p>
-      <textarea value={input} onChange={handleInput} placeholder="Start typing..." autoFocus />
-      <h3>Leaderboard</h3>
-      {Object.entries(players).map(([playerId, data]) => (
-        <p key={playerId}>{playerId}: {Math.round(data.progress)}%</p>
-      ))}
+      <MainContent>
+        <AnimatedHeader
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <HeaderLeft>
+            <Title>Typing Race</Title>
+            <PlayerId>{username}</PlayerId>
+          </HeaderLeft>
+          <Stats>
+            <AnimatedStatItem
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div>Progress</div>
+              <StatValue>{Math.round((input.length / paragraph.length) * 100)}%</StatValue>
+            </AnimatedStatItem>
+            <AnimatedStatItem
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div>Characters</div>
+              <StatValue>{input.length}</StatValue>
+            </AnimatedStatItem>
+          </Stats>
+        </AnimatedHeader>
+
+        <AnimatedTypingArea
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Paragraph>{paragraph || "Waiting for paragraph..."}</Paragraph>
+          <Input
+            value={input}
+            onChange={handleInput}
+            placeholder="Start typing..."
+            autoFocus
+          />
+        </AnimatedTypingArea>
+      </MainContent>
+
+      <Leaderboard>
+        <LeaderboardTitle>Leaderboard</LeaderboardTitle>
+        <PlayerList>
+          {Object.entries(players).map(([playerId, data]) => (
+            <PlayerItem
+              key={playerId}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span>{playerId}</span>
+              <span>{Math.round(data.progress)}%</span>
+            </PlayerItem>
+          ))}
+        </PlayerList>
+      </Leaderboard>
     </Container>
   );
 };
