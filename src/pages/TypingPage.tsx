@@ -72,11 +72,11 @@ const AnimatedStatItem = styled(motion.div)`
   min-width: 100px;
 `;
 
-const StatValue = styled.div`
+const StatValue = styled.div<{ isCorrect: boolean }>`
   font-size: 1.5rem;
   font-weight: bold;
-  color: #4a90e2;
-  text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+  color: ${props => props.isCorrect ? '#4a90e2' : '#ff4444'};
+  text-shadow: 0 0 10px ${props => props.isCorrect ? 'rgba(74, 144, 226, 0.3)' : 'rgba(255, 68, 68, 0.3)'};
 `;
 
 const AnimatedTypingArea = styled(motion.div)`
@@ -100,11 +100,11 @@ const Paragraph = styled.div`
   border-radius: 8px;
 `;
 
-const Input = styled.textarea`
+const Input = styled.textarea<{ isCorrect: boolean }>`
   width: 100%;
   padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
-  border: 2px solid #4a90e2;
+  border: 2px solid ${props => props.isCorrect ? '#4a90e2' : '#ff4444'};
   border-radius: 8px;
   color: #fff;
   font-size: 1.1rem;
@@ -115,8 +115,8 @@ const Input = styled.textarea`
 
   &:focus {
     outline: none;
-    border-color: #64b5f6;
-    box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+    border-color: ${props => props.isCorrect ? '#64b5f6' : '#ff6666'};
+    box-shadow: 0 0 20px ${props => props.isCorrect ? 'rgba(74, 144, 226, 0.3)' : 'rgba(255, 68, 68, 0.3)'};
   }
 `;
 
@@ -169,6 +169,7 @@ const TypingPage: React.FC = () => {
   const [paragraph, setParagraph] = useState("");
   const [input, setInput] = useState("");
   const [players, setPlayers] = useState<{ [key: string]: { progress: number } }>({});
+  const [isCorrect, setIsCorrect] = useState(true);
   
   const socketRef = useRef<Socket | null>(null); // Moved inside component
 
@@ -216,7 +217,9 @@ const TypingPage: React.FC = () => {
     setInput(value);
 
     if (socketRef.current) {
-      const progress = (value.length / paragraph.length) * 100;
+      const isCorrect = value === paragraph.slice(0, value.length);
+      setIsCorrect(isCorrect);
+      const progress = isCorrect ? (value.length / paragraph.length) * 100 : 0;
       socketRef.current.emit("updateProgress", { roomId, playerId: username, progress });
     }
   };
@@ -239,14 +242,18 @@ const TypingPage: React.FC = () => {
               whileTap={{ scale: 0.95 }}
             >
               <div>Progress</div>
-              <StatValue>{Math.round((input.length / paragraph.length) * 100)}%</StatValue>
+              <StatValue isCorrect={isCorrect}>
+                {Math.round(
+                  (input === paragraph.slice(0, input.length) ? input.length / paragraph.length : 0) * 100
+                )}%
+              </StatValue>
             </AnimatedStatItem>
             <AnimatedStatItem
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <div>Characters</div>
-              <StatValue>{input.length}</StatValue>
+              <StatValue isCorrect={isCorrect}>{input.length}</StatValue>
             </AnimatedStatItem>
           </Stats>
         </AnimatedHeader>
@@ -262,6 +269,7 @@ const TypingPage: React.FC = () => {
             onChange={handleInput}
             placeholder="Start typing..."
             autoFocus
+            isCorrect={isCorrect}
           />
         </AnimatedTypingArea>
       </MainContent>
