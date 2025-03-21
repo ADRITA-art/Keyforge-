@@ -9,11 +9,18 @@ const SERVER_URL = "http://localhost:5000";
 const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   display: grid;
   grid-template-columns: 1fr 300px;
   gap: 2rem;
-  height: 100vh;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 3rem;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
 `;
 
 const MainContent = styled.div`
@@ -30,6 +37,12 @@ const AnimatedHeader = styled(motion.div)`
   padding: 1rem 2rem;
   border-radius: 12px;
   backdrop-filter: blur(10px);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
 `;
 
 const HeaderLeft = styled.div`
@@ -62,6 +75,10 @@ const Stats = styled.div`
   display: flex;
   gap: 3rem;
   color: #fff;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `;
 
 const AnimatedStatItem = styled(motion.div)`
@@ -70,6 +87,11 @@ const AnimatedStatItem = styled(motion.div)`
   padding: 0.5rem 1rem;
   border-radius: 8px;
   min-width: 100px;
+
+  @media (max-width: 480px) {
+    min-width: 80px;
+    padding: 0.5rem;
+  }
 `;
 
 const AnimatedStatValue = styled(motion.div)<{ isCorrect: boolean }>`
@@ -88,6 +110,10 @@ const AnimatedTypingArea = styled(motion.div)`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 const Paragraph = styled.div`
@@ -98,6 +124,10 @@ const Paragraph = styled.div`
   background: rgba(255, 255, 255, 0.05);
   padding: 1rem;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const AnimatedInput = styled(motion.textarea)<{ isCorrect: boolean }>`
@@ -112,6 +142,11 @@ const AnimatedInput = styled(motion.textarea)<{ isCorrect: boolean }>`
   height: 200px;
   transition: all 0.3s ease;
   flex-grow: 1;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    height: 150px;
+  }
 
   &:focus {
     outline: none;
@@ -128,6 +163,11 @@ const Leaderboard = styled.div`
   height: fit-content;
   position: sticky;
   top: 2rem;
+
+  @media (max-width: 1024px) {
+    position: static;
+    margin-top: 2rem;
+  }
 `;
 
 const LeaderboardTitle = styled.h2`
@@ -146,7 +186,7 @@ const PlayerList = styled.div`
 
 const PlayerItem = styled(motion.div)`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   padding: 0.8rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
@@ -160,6 +200,164 @@ const PlayerItem = styled(motion.div)`
   }
 `;
 
+const PlayerInfo = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+`;
+
+const PlayerStats = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`;
+
+const PlayerAvatar = styled.div`
+  width: 32px;
+  height: 32px;
+  background: #4a90e2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  margin-right: 0.5rem;
+`;
+
+const ProgressBar = styled(motion.div)`
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin: 1rem 0;
+  overflow: hidden;
+`;
+
+const ProgressFill = styled(motion.div)<{ progress: number }>`
+  height: 100%;
+  background: linear-gradient(90deg, #4a90e2, #64b5f6);
+  width: ${props => props.progress}%;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+`;
+
+const ModalOverlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+`;
+
+const ModalContent = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+`;
+
+const ModalTitle = styled.h2`
+  color: #4a90e2;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+`;
+
+const WinnerInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+`;
+
+const WinnerAvatar = styled.div`
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #4a90e2, #64b5f6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+`;
+
+const WinnerName = styled.div`
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
+const ModalButtons = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+`;
+
+const ModalButton = styled(motion.button)<{ variant?: 'primary' | 'secondary' }>`
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  background: ${props => props.variant === 'primary' ? '#4a90e2' : 'rgba(255, 255, 255, 0.1)'};
+  color: white;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+  }
+`;
+
+const Credit = styled.div`
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  font-style: italic;
+`;
+
 const TypingPage: React.FC = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const location = useLocation();
@@ -168,10 +366,16 @@ const TypingPage: React.FC = () => {
 
   const [paragraph, setParagraph] = useState("");
   const [input, setInput] = useState("");
-  const [players, setPlayers] = useState<{ [key: string]: { progress: number } }>({});
+  const [players, setPlayers] = useState<{ [key: string]: { progress: number, wpm: number } }>({});
   const [isCorrect, setIsCorrect] = useState(true);
+  const [isRaceStarted, setIsRaceStarted] = useState(false);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [wpm, setWpm] = useState(0);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
   
-  const socketRef = useRef<Socket | null>(null); // Moved inside component
+  const socketRef = useRef<Socket | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (!username || !roomId) {
@@ -186,6 +390,8 @@ const TypingPage: React.FC = () => {
 
       socketRef.current.on("paragraph", (text: string) => {
         setParagraph(text);
+        setIsRaceStarted(true);
+        setStartTime(Date.now());
       });
 
       socketRef.current.on("progressUpdate", (roomData: any) => {
@@ -201,8 +407,8 @@ const TypingPage: React.FC = () => {
       });
 
       socketRef.current.on("winner", ({ playerId }: { playerId: string }) => {
-        alert(playerId === username ? "🎉 You won!" : `${playerId} won!`);
-        navigate("/");
+        setWinner(playerId);
+        setShowWinnerModal(true);
       });
 
       return () => {
@@ -212,7 +418,22 @@ const TypingPage: React.FC = () => {
     }
   }, [roomId, username, navigate]);
 
+  useEffect(() => {
+    if (isRaceStarted && startTime) {
+      const interval = setInterval(() => {
+        const timeElapsed = (Date.now() - startTime) / 1000 / 60; // in minutes
+        const wordsTyped = input.split(/\s+/).length;
+        const currentWpm = Math.round(wordsTyped / timeElapsed);
+        setWpm(currentWpm);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isRaceStarted, startTime, input]);
+
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (!isRaceStarted) return;
+    
     const value = e.target.value;
     setInput(value);
 
@@ -220,8 +441,28 @@ const TypingPage: React.FC = () => {
       const isCorrect = value === paragraph.slice(0, value.length);
       setIsCorrect(isCorrect);
       const progress = isCorrect ? (value.length / paragraph.length) * 100 : 0;
-      socketRef.current.emit("updateProgress", { roomId, playerId: username, progress });
+      socketRef.current.emit("updateProgress", { 
+        roomId, 
+        playerId: username, 
+        progress,
+        wpm 
+      });
     }
+  };
+
+  const handlePlayAgain = () => {
+    setShowWinnerModal(false);
+    setWinner(null);
+    setInput("");
+    setParagraph("");
+    setIsRaceStarted(false);
+    setStartTime(null);
+    setWpm(0);
+    setIsCorrect(true);
+  };
+
+  const handleGoHome = () => {
+    navigate("/");
   };
 
   return (
@@ -262,19 +503,19 @@ const TypingPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <div>Characters</div>
+              <div>WPM</div>
               <AnimatedStatValue 
-                isCorrect={isCorrect}
+                isCorrect={true}
                 animate={{ 
                   scale: [1, 1.1, 1],
-                  color: isCorrect ? '#4a90e2' : '#ff4444'
+                  color: '#4a90e2'
                 }}
                 transition={{ 
                   duration: 0.3,
                   ease: "easeInOut"
                 }}
               >
-                {input.length}
+                {wpm}
               </AnimatedStatValue>
             </AnimatedStatItem>
           </Stats>
@@ -286,12 +527,23 @@ const TypingPage: React.FC = () => {
           transition={{ duration: 0.5 }}
         >
           <Paragraph>{paragraph || "Waiting for paragraph..."}</Paragraph>
+          <ProgressBar>
+            <ProgressFill 
+              progress={input === paragraph.slice(0, input.length) ? (input.length / paragraph.length) * 100 : 0}
+              animate={{
+                width: input === paragraph.slice(0, input.length) ? `${(input.length / paragraph.length) * 100}%` : "0%"
+              }}
+              transition={{ duration: 0.3 }}
+            />
+          </ProgressBar>
           <AnimatedInput
+            ref={inputRef}
             value={input}
             onChange={handleInput}
             placeholder="Start typing..."
             autoFocus
             isCorrect={isCorrect}
+            disabled={!isRaceStarted}
             animate={{ 
               borderColor: isCorrect ? '#4a90e2' : '#ff4444',
               boxShadow: isCorrect 
@@ -309,19 +561,76 @@ const TypingPage: React.FC = () => {
       <Leaderboard>
         <LeaderboardTitle>Leaderboard</LeaderboardTitle>
         <PlayerList>
-          {Object.entries(players).map(([playerId, data]) => (
-            <PlayerItem
-              key={playerId}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <span>{playerId}</span>
-              <span>{Math.round(data.progress)}%</span>
-            </PlayerItem>
-          ))}
+          {Object.entries(players)
+            .sort(([, a], [, b]) => b.progress - a.progress)
+            .map(([playerId, data]) => (
+              <PlayerItem
+                key={playerId}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <PlayerInfo>
+                  <PlayerAvatar>
+                    {playerId[0].toUpperCase()}
+                  </PlayerAvatar>
+                  <span>{playerId}</span>
+                </PlayerInfo>
+                <PlayerStats>
+                  <span>{Math.round(data.progress)}%</span>
+                  <span>{data.wpm} WPM</span>
+                </PlayerStats>
+              </PlayerItem>
+            ))}
         </PlayerList>
       </Leaderboard>
+
+      <Credit>Made by Adrita</Credit>
+
+      <AnimatePresence>
+        {showWinnerModal && (
+          <ModalOverlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ModalContent
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ModalTitle>🎉 Race Complete! 🎉</ModalTitle>
+              <WinnerInfo>
+                <WinnerAvatar>
+                  {winner?.[0].toUpperCase()}
+                </WinnerAvatar>
+                <WinnerName>
+                  {winner === username ? "You won!" : `${winner} won!`}
+                </WinnerName>
+              </WinnerInfo>
+              <ModalButtons>
+                <ModalButton
+                  variant="primary"
+                  onClick={handleGoHome}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Play New Race
+                </ModalButton>
+                <ModalButton
+                  onClick={handleGoHome}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Return Home
+                </ModalButton>
+              </ModalButtons>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+      </AnimatePresence>
     </Container>
   );
 };
