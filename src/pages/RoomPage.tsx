@@ -57,15 +57,15 @@ const Container = styled(motion.div)`
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(15px);
   border-radius: 30px;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.2),
-    0 0 0 2px rgba(255, 255, 255, 0.1),
-    0 0 100px rgba(74, 144, 226, 0.15),
-    inset 0 0 50px rgba(74, 144, 226, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.15);
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 2px rgba(0, 0, 0, 0.8),
+    0 0 100px rgba(74, 144, 226, 0.1),
+    inset 0 0 50px rgba(0, 0, 0, 0.5);
+  border: 3px solid #000;
   position: relative;
   z-index: 1;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -82,7 +82,7 @@ const Container = styled(motion.div)`
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(74, 144, 226, 0.05) 0%, transparent 70%);
     animation: rotate 20s linear infinite;
     pointer-events: none;
   }
@@ -92,9 +92,9 @@ const Container = styled(motion.div)`
     position: absolute;
     inset: 0;
     background: linear-gradient(45deg, 
-      rgba(74, 144, 226, 0.1) 0%,
-      rgba(46, 204, 113, 0.1) 50%,
-      rgba(74, 144, 226, 0.1) 100%
+      rgba(74, 144, 226, 0.05) 0%,
+      rgba(46, 204, 113, 0.05) 50%,
+      rgba(74, 144, 226, 0.05) 100%
     );
     animation: gradientShift 8s ease-in-out infinite;
     pointer-events: none;
@@ -103,11 +103,11 @@ const Container = styled(motion.div)`
   &:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 
-      0 15px 45px rgba(0, 0, 0, 0.3),
-      0 0 0 2px rgba(255, 255, 255, 0.2),
-      0 0 150px rgba(74, 144, 226, 0.25),
-      inset 0 0 70px rgba(74, 144, 226, 0.15);
-    border-color: rgba(255, 255, 255, 0.25);
+      0 15px 45px rgba(0, 0, 0, 0.5),
+      0 0 0 2px rgba(0, 0, 0, 0.9),
+      0 0 150px rgba(74, 144, 226, 0.15),
+      inset 0 0 70px rgba(0, 0, 0, 0.6);
+    border-color: #000;
   }
 
   @keyframes rotate {
@@ -116,8 +116,8 @@ const Container = styled(motion.div)`
   }
 
   @keyframes gradientShift {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.5; }
   }
 `;
 
