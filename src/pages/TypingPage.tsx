@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { io, Socket } from "socket.io-client";
 
-const SERVER_URL = "http://localhost:5000";
+const SERVER_URL = "https://keyforge-backend.onrender.com";
 
 const Container = styled.div`
   max-width: 1400px;
