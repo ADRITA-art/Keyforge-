@@ -72,7 +72,7 @@ const AnimatedStatItem = styled(motion.div)`
   min-width: 100px;
 `;
 
-const StatValue = styled.div<{ isCorrect: boolean }>`
+const AnimatedStatValue = styled(motion.div)<{ isCorrect: boolean }>`
   font-size: 1.5rem;
   font-weight: bold;
   color: ${props => props.isCorrect ? '#4a90e2' : '#ff4444'};
@@ -100,7 +100,7 @@ const Paragraph = styled.div`
   border-radius: 8px;
 `;
 
-const Input = styled.textarea<{ isCorrect: boolean }>`
+const AnimatedInput = styled(motion.textarea)<{ isCorrect: boolean }>`
   width: 100%;
   padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
@@ -242,18 +242,40 @@ const TypingPage: React.FC = () => {
               whileTap={{ scale: 0.95 }}
             >
               <div>Progress</div>
-              <StatValue isCorrect={isCorrect}>
+              <AnimatedStatValue 
+                isCorrect={isCorrect}
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  color: isCorrect ? '#4a90e2' : '#ff4444'
+                }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
+              >
                 {Math.round(
                   (input === paragraph.slice(0, input.length) ? input.length / paragraph.length : 0) * 100
                 )}%
-              </StatValue>
+              </AnimatedStatValue>
             </AnimatedStatItem>
             <AnimatedStatItem
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <div>Characters</div>
-              <StatValue isCorrect={isCorrect}>{input.length}</StatValue>
+              <AnimatedStatValue 
+                isCorrect={isCorrect}
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  color: isCorrect ? '#4a90e2' : '#ff4444'
+                }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
+              >
+                {input.length}
+              </AnimatedStatValue>
             </AnimatedStatItem>
           </Stats>
         </AnimatedHeader>
@@ -264,12 +286,22 @@ const TypingPage: React.FC = () => {
           transition={{ duration: 0.5 }}
         >
           <Paragraph>{paragraph || "Waiting for paragraph..."}</Paragraph>
-          <Input
+          <AnimatedInput
             value={input}
             onChange={handleInput}
             placeholder="Start typing..."
             autoFocus
             isCorrect={isCorrect}
+            animate={{ 
+              borderColor: isCorrect ? '#4a90e2' : '#ff4444',
+              boxShadow: isCorrect 
+                ? '0 0 20px rgba(74, 144, 226, 0.3)' 
+                : '0 0 20px rgba(255, 68, 68, 0.3)'
+            }}
+            transition={{ 
+              duration: 0.3,
+              ease: "easeInOut"
+            }}
           />
         </AnimatedTypingArea>
       </MainContent>
